@@ -1,97 +1,67 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct TreeNode {
     char data;
-    struct TreeNode* lson;
-    struct TreeNode* rson;
+    struct TreeNode *left;
+    struct TreeNode *right;
 } TreeNode;
 
-static void copy(char* fore, char* mid, char* ltf, char* ltm, char* rtf, char* rtm, int i) {
-    strncpy(ltf, fore + 1, i);
-    ltf[i] = '\0';
-    strncpy(ltm, mid, i);
-    ltm[i] = '\0';
+/**
+ * 根据前序遍历和中序遍历序列重建二叉树。
+ *
+ * 该函数接受前序遍历和中序遍历序列作为输入,并返回重建的二叉树根节点。
+ *
+ * @param preorder 前序遍历序列
+ * @param inorder 中序遍历序列
+ * @param n 序列长度
+ * @return 重建的二叉树根节点
+ */
+TreeNode *restore(char preorder[], char inorder[], int n);
 
-    strncpy(rtf, fore + i + 1, strlen(fore) - i - 1);
-    rtf[(strlen(fore) - i - 1)] = '\0';
-    strncpy(rtm, mid + i + 1, strlen(mid) - i - 1);
-    rtm[strlen(mid) - i - 1] = '\0';
+/**
+ * 以后序遍历的方式打印二叉树的所有节点。
+ *
+ * @param root 二叉树的根节点
+ */
+void postTraverse(TreeNode *root);
+
+
+TreeNode* restore(char preorder[], char inorder[], int n) {
+    if (n <= 0 || !preorder || !inorder) return NULL;
+
+    TreeNode* root = (TreeNode*)malloc(sizeof(TreeNode));
+    root->data = *preorder;
+
+    int rootIndex = 0;
+    for (; rootIndex < n; rootIndex++) { if (inorder[rootIndex] == *preorder) break; }
+	// 找到根节点在中序遍历中的位置
+    if (rootIndex >= n) { printf("error\n"); return NULL; }
+
+	// 依次递归构建左、右子树
+    root->left = restore(preorder + 1, inorder, rootIndex);
+    root->right = restore(preorder + rootIndex + 1, inorder + rootIndex + 1, n - rootIndex - 1);
+
+    return root;
 }
 
-static TreeNode* restore(char* fore, char* mid) {
-    if (strlen(fore) == 0 && strlen(mid) == 0) {
-        return NULL;
-    }
-
-    if (strlen(fore) != strlen(mid)) {
-        fprintf(stdout, "error\n");
-        return NULL;
-    }
-
-    char ltf[sizeof(fore)];
-    char ltm[sizeof(mid)];
-    char rtf[sizeof(fore)];
-    char rtm[sizeof(mid)];
-    char tmp = fore[0];
-
-    TreeNode* Head = malloc(sizeof(TreeNode));
-    if (Head == NULL) {
-        fprintf(stdout, "error\n");
-        return NULL;
-    }
-    Head->data = tmp;
-
-    int i = 0;
-    for (; i < strlen(mid); i++) {
-        if (mid[i] == tmp) {
-            break;
-        }
-    }
-
-    if (i == strlen(mid)) {
-        fprintf(stdout, "error\n");
-        return NULL;
-    }
-
-    copy(fore, mid, ltf, ltm, rtf, rtm, i);
-    Head->lson = restore(ltf, ltm);
-    if (Head->lson == NULL) {
-        return NULL;
-    }
-    Head->rson = restore(rtf, rtm);
-    if (Head->rson == NULL) {
-        return NULL;
-    }
-
-    return Head;
-}
-
-static void back(TreeNode* root) {
-    if (root == NULL) {
-        return;
-    }
-    back(root->lson);
-    back(root->rson);
-    fprintf(stdout, "%c", root->data);
+void postTraverse(TreeNode* root) {
+    if (root == NULL) return;
+    postTraverse(root->left);
+    postTraverse(root->right);
+    printf("%c", root->data);
 }
 
 int main() {
-    char fore[2048];
-    char mid[2048];
-    int res;
+    char preorder[2048];
+    char inorder[2048];
 
-    res = scanf("%s", fore);
-    res = scanf("%s", mid);
+    scanf("%s", preorder);
+    scanf("%s", inorder);
 
-    TreeNode* root = restore(fore, mid);
-    if (root == NULL) {
-        return 1;
-    }
-    back(root);
-
-    free(root);
-
-    return 0;
+    if (strlen(preorder) != strlen(inorder)) { printf("error\n"); return 1; }
+    
+    TreeNode* root = restore(preorder, inorder, strlen(preorder));
+    postTraverse(root);
 }
