@@ -3,6 +3,12 @@
 
 #define MAXLEN 10
 
+/**
+ * 将数组分成奇数和偶数两部分
+ * 
+ * @param arr 要分割的数组
+ * @return 包含奇数和偶数数组以及长度信息的二维数组
+ */
 int** divideArr(int *arr) {
     int **ret = (int **)malloc(sizeof(int *) * 2);
     int *odd = (int *)malloc(sizeof(int) * MAXLEN / 2);
@@ -26,6 +32,12 @@ int** divideArr(int *arr) {
     return ret;
 }
 
+/**
+ * 对数组进行排序（升序）
+ * 
+ * @param arr 要排序的数组
+ * @param n 数组的长度
+ */
 void sort(int *arr, int n) {
     if (arr == NULL || n <= 0) return;
     
@@ -40,6 +52,12 @@ void sort(int *arr, int n) {
     }
 }
 
+/**
+ * 打印排序后的数组元素
+ * 
+ * @param arr 要打印的数组
+ * @param n 数组的长度
+ */
 void printSorted(int *arr, int n) {
     sort(arr, n);
     for (int i = 0; i < n; i++) printf("%d ", arr[i]);

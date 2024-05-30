@@ -21,8 +21,6 @@ int* swapson(int* preOrder, std::map<int, int>& indexMap, int* res, int preStart
     *res++ = preOrder[preStart];    // 先序遍历根节点
     int rootIndex = indexMap[preOrder[preStart++]];     // 查询根节点在中序遍历中的位置
 
-    //! 不可以删去下方的res =，虽然传入的是指针，res的值应该是可以动态更新的，但是码图说不。
-
     // 构建左子树（实际上是原来的二叉树的右子树）
     res = swapson(preOrder, indexMap, res, preEnd + (rootIndex - inEnd) + 1, preEnd, rootIndex + 1, inEnd);
     // 构建右子树（实际上是原来的二叉树的左子树）
@@ -31,12 +29,6 @@ int* swapson(int* preOrder, std::map<int, int>& indexMap, int* res, int preStart
     return res;
 }
 
-/*
-*   如果改写为如下形式，最终得分只有90（原因不明），所以无法用纯C实现
-*    int *pos = (int*)calloc(n, sizeof(int));
-*    for (int i = 0; i < n; i++)
-*        pos[inOrder[i]] = i;
-*/
 void solve(int n, int* preOrder, int* inOrder, int* outOrder) {
     // 使用映射结构，便于快速查找根节点的位置
     std::map<int, int> pos;
