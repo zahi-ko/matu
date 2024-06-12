@@ -1,18 +1,11 @@
 #include <stdio.h>
 
-/**
- * 基本思路同 714.c
- * @param n 总的节点数目
- * @param nodes 当前层需要遍历的节点数目
- * @param checked 已经遍历过的节点数目
- * @param first 是否为初次进入函数（以便正确打印结果）
- * @return 二叉树的最大深度
- */
+// �����3 ,9 20 ,15 7 
+
 void hierTraversal(int n, int nodes, int checked, char first) {
     if (checked >= n) return;
-    // 每一层要用逗号分隔开来
-    if (first != 'y') putchar(',');
 
+    if (first != 'y') putchar(',');
     int tmp;
     int nullCount = 0;
     for (int i = 0; i < nodes && checked < n; i++) {
@@ -21,7 +14,6 @@ void hierTraversal(int n, int nodes, int checked, char first) {
         else printf("%d ", tmp);
         checked++;
     }
-
     int nextNodes = 2 * (nodes - nullCount);
     hierTraversal(n, nextNodes, checked, 'n');
 }

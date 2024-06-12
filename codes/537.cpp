@@ -1,15 +1,16 @@
+/**
+ * ʹ��������������㷨����ͼ���ڽӾ�����ڽӱ���ʾ��
+ *
+ * @param n ͼ�Ķ�����
+ * @param m ͼ�ı���
+ * @param e ͼ�ı߼���
+ * @param outA ʹ���ڽӾ����ʾ�������
+ * @param outB ʹ���ڽӱ���ʾ�������
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 
-/**
- * 深度优先搜索遍历邻接矩阵表示的图
- * @param v 当前遍历的顶点
- * @param n 图的顶点数
- * @param visited 记录顶点是否被访问的数组
- * @param matrix 邻接矩阵
- * @param out 存储遍历结果的数组
- * @param index 存储遍历结果数组的索引
- */
 void dfsMatrix(int v, int n, int visited[], int **matrix, int out[], int *index)
 {
     visited[v] = 1;
@@ -23,13 +24,6 @@ void dfsMatrix(int v, int n, int visited[], int **matrix, int out[], int *index)
     }
 }
 
-/**
- * 解决问题A的函数
- * @param n 图的顶点数
- * @param m 图的边数
- * @param e 存储边的数组
- * @param out 存储遍历结果的数组
- */
 void solveA(int n, int m, int e[][2], int out[])
 {
     int **matrix = (int **)malloc(n * sizeof(int *));
@@ -55,23 +49,12 @@ void solveA(int n, int m, int e[][2], int out[])
     free(visited);
 }
 
-/**
- * 邻接链表的结点结构
- */
 typedef struct Node
 {
     int vertex;
     struct Node *next;
 } Node;
 
-/**
- * 深度优先搜索遍历邻接链表表示的图
- * @param v 当前遍历的顶点
- * @param adjList 邻接链表数组
- * @param visited 记录顶点是否被访问的数组
- * @param out 存储遍历结果的数组
- * @param index 存储遍历结果数组的索引
- */
 void dfsList(int v, Node **adjList, int visited[], int out[], int *index)
 {
     visited[v] = 1;
@@ -86,12 +69,6 @@ void dfsList(int v, Node **adjList, int visited[], int out[], int *index)
         current = current->next;
     }
 }
-
-/**
- * 向邻接链表中添加结点
- * @param head 链表头指针的指针
- * @param vertex 结点的值
- */
 void addNode(Node **head, int vertex)
 {
     Node *newNode = (Node *)malloc(sizeof(Node));
@@ -112,14 +89,6 @@ void addNode(Node **head, int vertex)
         current->next = newNode;
     }
 }
-
-/**
- * 解决问题B的函数
- * @param n 图的顶点数
- * @param m 图的边数
- * @param e 存储边的数组
- * @param out 存储遍历结果的数组
- */
 void solveB(int n, int m, int e[][2], int out[])
 {
     Node **adjList = (Node **)calloc(n, sizeof(Node *));
@@ -146,7 +115,6 @@ void solveB(int n, int m, int e[][2], int out[])
     free(adjList);
     free(visited);
 }
-
 int main()
 {
     int n = 5, m = 10;
